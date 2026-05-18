@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="eureka-service" />
+        <module name="api-gateway" />
+      </profile>
+      <profile name="Annotation profile for usuarios-service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
+        </processorPath>
+        <module name="suscripciones-service" />
+        <module name="recomendacion-service" />
+        <module name="calificacion-service" />
+        <module name="usuarios-service" />
+        <module name="director-service" />
+        <module name="pelicula-service" />
+        <module name="mi-lista-service" />
+        <module name="productora-service" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="config-server" target="23" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="api-gateway" options="-parameters" />
+      <module name="calificacion-service" options="-parameters" />
+      <module name="director-service" options="-parameters" />
+      <module name="eureka-service" options="-parameters" />
+      <module name="mi-lista-service" options="-parameters" />
+      <module name="pelicula-service" options="-parameters" />
+      <module name="productora-service" options="-parameters" />
+      <module name="recomendacion-service" options="-parameters" />
+      <module name="suscripciones-service" options="-parameters" />
+      <module name="usuarios-service" options="-parameters" />
+    </option>
+  </component>
+</project>

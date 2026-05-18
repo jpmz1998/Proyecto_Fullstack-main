@@ -1,0 +1,6 @@
+CREATE TABLE productora (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre_prod VARCHAR(255),
+    fecha_creacion DATE,
+    nacionalidad VARCHAR(255)
+);
