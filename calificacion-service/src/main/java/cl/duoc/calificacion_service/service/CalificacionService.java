@@ -4,7 +4,6 @@ import cl.duoc.calificacion_service.model.Calificacion;
 import cl.duoc.calificacion_service.repository.CalificacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,49 +13,39 @@ public class CalificacionService {
     @Autowired
     private CalificacionRepository calificacionRepository;
 
-    // --- EL METODO MATEMATICO (Para el Feign Client del Director) ---
-    @Transactional(readOnly = true)
-    public Double obtenerPromedioMasivo(List<Long> peliculasIds) {
-        if (peliculasIds == null || peliculasIds.isEmpty()) {
-            return 0.0;
-        }
-        Double promedio = calificacionRepository.calcularPromedioPorListaPeliculas(peliculasIds);
-        return promedio != null ? promedio : 0.0;
+    public List<Calificacion> findAll() { return calificacionRepository.findAll(); }
+    public Calificacion findById(Long id) { return calificacionRepository.findById(id).orElse(null); }
+    public Calificacion save(Calificacion c) { return calificacionRepository.save(c); }
+    public void delete(Long id) { calificacionRepository.deleteById(id); }
+
+    public Calificacion update(Long id, Calificacion actualizada) {
+        Calificacion existente = calificacionRepository.findById(id).orElse(null);
+        if (existente == null) return null;
+        existente.setPuntos(actualizada.getPuntos());
+        existente.setFechaCalificacion(actualizada.getFechaCalificacion());
+        existente.setIdUsuario(actualizada.getIdUsuario());
+        existente.setIdPelicula(actualizada.getIdPelicula());
+        return calificacionRepository.save(existente);
     }
 
-    // --- OPERACIONES CRUD ESTANDAR ---
-
-    @Transactional(readOnly = true)
-    public List<Calificacion> findAll() {
-        return calificacionRepository.findAll();
+    public Double obtenerPromedioMasivo(List<Long> ids) {
+        return calificacionRepository.calcularPromedioPorListaPeliculas(ids);
     }
 
-    @Transactional(readOnly = true)
-    public Calificacion findById(Long id) {
-        return calificacionRepository.findById(id).orElse(null);
+    // REPORTES
+    public List<Calificacion> findByPelicula(Long idPelicula) {
+        return calificacionRepository.findByIdPelicula(idPelicula);
     }
 
-    @Transactional
-    public Calificacion save(Calificacion calificacion) {
-        return calificacionRepository.save(calificacion);
+    public List<Calificacion> findByUsuario(Long idUsuario) {
+        return calificacionRepository.findByIdUsuario(idUsuario);
     }
 
-    @Transactional
-    public void delete(Long id) {
-        calificacionRepository.deleteById(id);
+    public Double promedioPorPelicula(Long idPelicula) {
+        return calificacionRepository.calcularPromedioPorPelicula(idPelicula);
     }
 
-    @Transactional
-    public Calificacion update(Long id, Calificacion calificacionActualizada) {
-        Calificacion calificacionExistente = calificacionRepository.findById(id).orElse(null);
-        if (calificacionExistente == null) return null;
-
-        // Actualizamos los campos
-        calificacionExistente.setPuntos(calificacionActualizada.getPuntos());
-        calificacionExistente.setFechaCalificacion(calificacionActualizada.getFechaCalificacion());
-        calificacionExistente.setIdUsuario(calificacionActualizada.getIdUsuario());
-        calificacionExistente.setIdPelicula(calificacionActualizada.getIdPelicula());
-
-        return calificacionRepository.save(calificacionExistente);
+    public List<Calificacion> findByPuntajeMinimo(Integer puntaje) {
+        return calificacionRepository.findByPuntosGreaterThanEqual(puntaje);
     }
 }

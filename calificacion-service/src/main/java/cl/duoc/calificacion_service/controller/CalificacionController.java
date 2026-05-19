@@ -21,47 +21,65 @@ public class CalificacionController {
     @Autowired
     private CalificacionMapper mapper;
 
-    // --- ENDPOINT ESPECIAL (Para la orquestacion con director-service) ---
+    // Endpoint especial para Feign
     @PostMapping("/promedio-masivo")
     public ResponseEntity<Double> obtenerPromedioPorListaDePeliculas(@RequestBody List<Long> peliculasIds) {
-        Double promedio = calificacionService.obtenerPromedioMasivo(peliculasIds);
-        return ResponseEntity.ok(promedio);
+        return ResponseEntity.ok(calificacionService.obtenerPromedioMasivo(peliculasIds));
     }
 
-    // --- ENDPOINTS CRUD ESTÁNDAR ---
-
+    // CRUD
     @GetMapping
     public ResponseEntity<List<CalificacionDTO>> listarTodas() {
-        List<CalificacionDTO> listaDto = calificacionService.findAll()
-                .stream()
-                .map(mapper::toDTO)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(listaDto);
+        return ResponseEntity.ok(calificacionService.findAll().stream()
+                .map(mapper::toDTO).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CalificacionDTO> obtenerPorId(@PathVariable Long id) {
-        Calificacion calificacion = calificacionService.findById(id);
-        if (calificacion == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(mapper.toDTO(calificacion));
+        Calificacion c = calificacionService.findById(id);
+        if (c == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(mapper.toDTO(c));
     }
 
     @PostMapping
     public ResponseEntity<CalificacionDTO> crear(@RequestBody Calificacion calificacion) {
-        Calificacion nuevaCalificacion = calificacionService.save(calificacion);
-        return ResponseEntity.ok(mapper.toDTO(nuevaCalificacion));
+        return ResponseEntity.ok(mapper.toDTO(calificacionService.save(calificacion)));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CalificacionDTO> actualizar(@PathVariable Long id, @RequestBody Calificacion calificacion) {
-        Calificacion calificacionActualizada = calificacionService.update(id, calificacion);
-        if (calificacionActualizada == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(mapper.toDTO(calificacionActualizada));
+        Calificacion actualizada = calificacionService.update(id, calificacion);
+        if (actualizada == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(mapper.toDTO(actualizada));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         calificacionService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // REPORTES
+    @GetMapping("/pelicula/{idPelicula}")
+    public ResponseEntity<List<CalificacionDTO>> porPelicula(@PathVariable Long idPelicula) {
+        return ResponseEntity.ok(calificacionService.findByPelicula(idPelicula).stream()
+                .map(mapper::toDTO).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/usuario/{idUsuario}")
+    public ResponseEntity<List<CalificacionDTO>> porUsuario(@PathVariable Long idUsuario) {
+        return ResponseEntity.ok(calificacionService.findByUsuario(idUsuario).stream()
+                .map(mapper::toDTO).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/pelicula/{idPelicula}/promedio")
+    public ResponseEntity<Double> promedioPorPelicula(@PathVariable Long idPelicula) {
+        return ResponseEntity.ok(calificacionService.promedioPorPelicula(idPelicula));
+    }
+
+    @GetMapping("/filtro/puntaje-minimo")
+    public ResponseEntity<List<CalificacionDTO>> filtrarPorPuntajeMinimo(@RequestParam Integer puntaje) {
+        return ResponseEntity.ok(calificacionService.findByPuntajeMinimo(puntaje).stream()
+                .map(mapper::toDTO).collect(Collectors.toList()));
     }
 }

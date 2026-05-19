@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductoraService {
@@ -44,38 +45,47 @@ public class ProductoraService {
     }
 
     @Transactional
-    public Productora update(Long id, Productora productoraActualizada) {
-        Productora productoraExistente = productoraRepository.findById(id).orElse(null);
-        if (productoraExistente == null) return null;
-
-        productoraExistente.setNombre(productoraActualizada.getNombre());
-        productoraExistente.setPaisUbicacion(productoraActualizada.getPaisUbicacion());
-        productoraExistente.setAnioFundacion(productoraActualizada.getAnioFundacion());
-
-        return productoraRepository.save(productoraExistente);
+    public Productora update(Long id, Productora actualizada) {
+        Productora existente = productoraRepository.findById(id).orElse(null);
+        if (existente == null) return null;
+        existente.setNombre(actualizada.getNombre());
+        existente.setPaisUbicacion(actualizada.getPaisUbicacion());
+        existente.setAnioFundacion(actualizada.getAnioFundacion());
+        return productoraRepository.save(existente);
     }
 
-    // --- EL METODO CUSTOM DE ORQUESTACION ---
     public ProductoraDTO obtenerEstadisticasProductora(Long idProductora) {
-        // 1. Buscamos la productora localmente
-        Productora productoraLocal = productoraRepository.findById(idProductora).orElse(null);
-        if (productoraLocal == null) return null;
-
-        // 2. Mapeamos a DTO
-        ProductoraDTO dto = mapper.toDTO(productoraLocal);
-
+        Productora local = productoraRepository.findById(idProductora).orElse(null);
+        if (local == null) return null;
+        ProductoraDTO dto = mapper.toDTO(local);
         try {
-            // 3. Llamada Feign al catálogo
-            List<Long> idsPeliculas = peliculaClient.obtenerIdsPeliculasPorProductora(idProductora);
-
-            if (idsPeliculas != null) {
-                dto.setCantidadPeliculasFinanciadas(idsPeliculas.size());
-            }
+            List<Long> ids = peliculaClient.obtenerIdsPeliculasPorProductora(idProductora);
+            if (ids != null) dto.setCantidadPeliculasFinanciadas(ids.size());
         } catch (Exception e) {
-            System.err.println("Error de comunicación con pelicula-service: " + e.getMessage());
-            dto.setCantidadPeliculasFinanciadas(0); // Valor por defecto si hay error
+            dto.setCantidadPeliculasFinanciadas(0);
         }
-
         return dto;
+    }
+
+    // REPORTES
+    public List<ProductoraDTO> findByPais(String pais) {
+        return productoraRepository.findByPaisUbicacionIgnoreCase(pais)
+                .stream()
+                .map(p -> obtenerEstadisticasProductora(p.getId()))
+                .collect(Collectors.toList());
+    }
+
+    public List<ProductoraDTO> findByRangoAnio(Integer anioMin, Integer anioMax) {
+        return productoraRepository.findByRangoAnioFundacion(anioMin, anioMax)
+                .stream()
+                .map(p -> obtenerEstadisticasProductora(p.getId()))
+                .collect(Collectors.toList());
+    }
+
+    public List<ProductoraDTO> findByNombre(String nombre) {
+        return productoraRepository.findByNombreContainingIgnoreCase(nombre)
+                .stream()
+                .map(p -> obtenerEstadisticasProductora(p.getId()))
+                .collect(Collectors.toList());
     }
 }

@@ -18,38 +18,42 @@ public class UsuarioService {
     @Autowired
     private UsuarioMapper mapper;
 
-    // 1. Listar todos (retorna DTOs sin password)
     public List<UsuarioDTO> findAll() {
         return mapper.toListDTO(usuarioRepository.findAll());
     }
 
-    // 2. Buscar por ID (retorna DTO seguro)
     public UsuarioDTO findById(Long id) {
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
-        return mapper.toDTO(usuario);
+        return mapper.toDTO(usuarioRepository.findById(id).orElse(null));
     }
 
-    // 3. Crear nuevo usuario
     public UsuarioDTO save(Usuario usuario) {
-        Usuario guardado = usuarioRepository.save(usuario);
-        return mapper.toDTO(guardado);
+        return mapper.toDTO(usuarioRepository.save(usuario));
     }
 
-    // 4. Eliminar por ID
     public void delete(Long id) {
         usuarioRepository.deleteById(id);
     }
 
-    // 5. Actualizar usuario
     public UsuarioDTO update(Long id, Usuario usuario) {
-        Usuario usuarioActualizado = usuarioRepository.findById(id).orElse(null);
-        if (usuarioActualizado == null) return null;
+        Usuario existente = usuarioRepository.findById(id).orElse(null);
+        if (existente == null) return null;
+        existente.setNombre(usuario.getNombre());
+        existente.setEmail(usuario.getEmail());
+        existente.setPassword(usuario.getPassword());
+        existente.setRol(usuario.getRol());
+        return mapper.toDTO(usuarioRepository.save(existente));
+    }
 
-        usuarioActualizado.setNombre(usuario.getNombre());
-        usuarioActualizado.setEmail(usuario.getEmail());
-        usuarioActualizado.setPassword(usuario.getPassword());
-        usuarioActualizado.setRol(usuario.getRol());
+    // REPORTES
+    public UsuarioDTO findByEmail(String email) {
+        return mapper.toDTO(usuarioRepository.findByEmail(email).orElse(null));
+    }
 
-        return mapper.toDTO(usuarioRepository.save(usuarioActualizado));
+    public List<UsuarioDTO> findByRol(String rol) {
+        return mapper.toListDTO(usuarioRepository.findByRol(rol));
+    }
+
+    public List<UsuarioDTO> findByNombre(String nombre) {
+        return mapper.toListDTO(usuarioRepository.findByNombreContainingIgnoreCase(nombre));
     }
 }

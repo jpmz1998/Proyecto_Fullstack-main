@@ -4,7 +4,48 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8091b2b3-f247-4f9f-ab46-02f041b28b50" name="Changes" comment="" />
+    <list default="true" id="8091b2b3-f247-4f9f-ab46-02f041b28b50" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/calificacion-service/src/main/java/cl/duoc/calificacion_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/calificacion-service/src/main/java/cl/duoc/calificacion_service/exception/ResourceNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/director-service/src/main/java/cl/duoc/director_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/director-service/src/main/java/cl/duoc/director_service/exception/ResourceNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mi-lista-service/src/main/java/cl/duoc/mi_lista_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mi-lista-service/src/main/java/cl/duoc/mi_lista_service/exception/ResourceNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pelicula-service/src/main/java/cl/duoc/pelicula_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pelicula-service/src/main/java/cl/duoc/pelicula_service/exception/ResourceNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/productora-service/src/main/java/cl/duoc/productora_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/productora-service/src/main/java/cl/duoc/productora_service/exception/ResourceNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/recomendacion-service/src/main/java/cl/duoc/recomendacion_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/recomendacion-service/src/main/java/cl/duoc/recomendacion_service/exception/ResourceNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/suscripciones-service/src/main/java/cl/duoc/suscripciones_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/suscripciones-service/src/main/java/cl/duoc/suscripciones_service/exception/ResourceNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/usuarios-service/src/main/java/cl/duoc/usuarios_service/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/usuarios-service/src/main/java/cl/duoc/usuarios_service/exception/ResourceNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/calificacion-service/src/main/java/cl/duoc/calificacion_service/controller/CalificacionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/calificacion-service/src/main/java/cl/duoc/calificacion_service/controller/CalificacionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/calificacion-service/src/main/java/cl/duoc/calificacion_service/repository/CalificacionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/calificacion-service/src/main/java/cl/duoc/calificacion_service/repository/CalificacionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/calificacion-service/src/main/java/cl/duoc/calificacion_service/service/CalificacionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/calificacion-service/src/main/java/cl/duoc/calificacion_service/service/CalificacionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/director-service/src/main/java/cl/duoc/director_service/controller/DirectorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/director-service/src/main/java/cl/duoc/director_service/controller/DirectorController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/director-service/src/main/java/cl/duoc/director_service/repository/DirectorRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/director-service/src/main/java/cl/duoc/director_service/repository/DirectorRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/director-service/src/main/java/cl/duoc/director_service/service/DirectorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/director-service/src/main/java/cl/duoc/director_service/service/DirectorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mi-lista-service/src/main/java/cl/duoc/mi_lista_service/controller/MiListaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/mi-lista-service/src/main/java/cl/duoc/mi_lista_service/controller/MiListaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mi-lista-service/src/main/java/cl/duoc/mi_lista_service/service/MiListaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/mi-lista-service/src/main/java/cl/duoc/mi_lista_service/service/MiListaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pelicula-service/src/main/java/cl/duoc/pelicula_service/controller/PeliculaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/pelicula-service/src/main/java/cl/duoc/pelicula_service/controller/PeliculaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pelicula-service/src/main/java/cl/duoc/pelicula_service/repository/PeliculaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/pelicula-service/src/main/java/cl/duoc/pelicula_service/repository/PeliculaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pelicula-service/src/main/java/cl/duoc/pelicula_service/service/PeliculaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/pelicula-service/src/main/java/cl/duoc/pelicula_service/service/PeliculaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/productora-service/src/main/java/cl/duoc/productora_service/controller/ProductoraController.java" beforeDir="false" afterPath="$PROJECT_DIR$/productora-service/src/main/java/cl/duoc/productora_service/controller/ProductoraController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/productora-service/src/main/java/cl/duoc/productora_service/repository/ProductoraRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/productora-service/src/main/java/cl/duoc/productora_service/repository/ProductoraRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/productora-service/src/main/java/cl/duoc/productora_service/service/ProductoraService.java" beforeDir="false" afterPath="$PROJECT_DIR$/productora-service/src/main/java/cl/duoc/productora_service/service/ProductoraService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recomendacion-service/src/main/java/cl/duoc/recomendacion_service/controller/RecomendacionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/recomendacion-service/src/main/java/cl/duoc/recomendacion_service/controller/RecomendacionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recomendacion-service/src/main/java/cl/duoc/recomendacion_service/repository/RecomendacionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/recomendacion-service/src/main/java/cl/duoc/recomendacion_service/repository/RecomendacionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recomendacion-service/src/main/java/cl/duoc/recomendacion_service/service/RecomendacionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/recomendacion-service/src/main/java/cl/duoc/recomendacion_service/service/RecomendacionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/suscripciones-service/src/main/java/cl/duoc/suscripciones_service/controller/SuscripcionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/suscripciones-service/src/main/java/cl/duoc/suscripciones_service/controller/SuscripcionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/suscripciones-service/src/main/java/cl/duoc/suscripciones_service/repository/SuscripcionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/suscripciones-service/src/main/java/cl/duoc/suscripciones_service/repository/SuscripcionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/suscripciones-service/src/main/java/cl/duoc/suscripciones_service/service/SuscripcionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/suscripciones-service/src/main/java/cl/duoc/suscripciones_service/service/SuscripcionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/usuarios-service/src/main/java/cl/duoc/usuarios_service/controller/UsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/usuarios-service/src/main/java/cl/duoc/usuarios_service/controller/UsuarioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/usuarios-service/src/main/java/cl/duoc/usuarios_service/repository/UsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/usuarios-service/src/main/java/cl/duoc/usuarios_service/repository/UsuarioRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/usuarios-service/src/main/java/cl/duoc/usuarios_service/service/UsuarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/usuarios-service/src/main/java/cl/duoc/usuarios_service/service/UsuarioService.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,52 +80,53 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.ApiGatewayApplication.executor": "Run",
-    "Application.CalificacionServiceApplication.executor": "Run",
-    "Application.DirectorServiceApplication.executor": "Run",
-    "Application.EurekaServiceApplication.executor": "Run",
-    "Application.ProductoraServiceApplication.executor": "Run",
-    "Application.UsuariosServiceApplication.executor": "Run",
-    "Application.cl.duoc.eureka_service.EurekaServiceApplication.executor": "Run",
-    "JUnit.All in eureka-service (1).executor": "Run",
-    "JUnit.All in eureka-service.executor": "Run",
-    "Maven.pelicula-service [compile].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Spring Boot.ApiGatewayApplication.executor": "Run",
-    "Spring Boot.CalificacionServiceApplication.executor": "Run",
-    "Spring Boot.DirectorServiceApplication.executor": "Run",
-    "Spring Boot.EurekaServiceApplication.executor": "Run",
-    "Spring Boot.MiListaServiceApplication.executor": "Run",
-    "Spring Boot.PeliculaServiceApplication.executor": "Run",
-    "Spring Boot.ProductoraServiceApplication.executor": "Run",
-    "Spring Boot.RecomendacionServiceApplication.executor": "Run",
-    "Spring Boot.SuscripcionesServiceApplication.executor": "Run",
-    "Spring Boot.UsuariosServiceApplication.executor": "Run",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/jpmz1/OneDrive/Escritorio/Nueva carpeta (7)/Proyecto_Fullstack-main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2505747",
-    "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.ApiGatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.CalificacionServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.DirectorServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.EurekaServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ProductoraServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.UsuariosServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.cl.duoc.eureka_service.EurekaServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in eureka-service (1).executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in eureka-service.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.pelicula-service [compile].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.ApiGatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.CalificacionServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.DirectorServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.EurekaServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.MiListaServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.PeliculaServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.ProductoraServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.RecomendacionServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.SuscripcionesServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.UsuariosServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/jpmz1/OneDrive/Escritorio/Nueva carpeta (7)/Proyecto_Fullstack-main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2505747&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\jpmz1\OneDrive\Escritorio\Nueva carpeta (5)\Proyecto_Fullstack-main\api-gateway\src\main/java/cl/duoc/api_gateway/" />
@@ -113,7 +155,7 @@
               <entry key="DirectorServiceApplication" value="STOPPED" />
               <entry key="EurekaServiceApplication" value="STOPPED" />
               <entry key="MiListaServiceApplication" value="STOPPED" />
-              <entry key="PeliculaServiceApplication" value="FAILED" />
+              <entry key="PeliculaServiceApplication" value="STOPPED" />
               <entry key="ProductoraServiceApplication" value="STOPPED" />
               <entry key="RecomendacionServiceApplication" value="STOPPED" />
               <entry key="SuscripcionesServiceApplication" value="STOPPED" />
@@ -124,7 +166,7 @@
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.ApiGatewayApplication">
+  <component name="RunManager" selected="Spring Boot.UsuariosServiceApplication">
     <configuration name="ApiGatewayApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="cl.duoc.api_gateway.ApiGatewayApplication" />
       <module name="api-gateway" />

@@ -4,7 +4,6 @@ import cl.duoc.pelicula_service.model.Pelicula;
 import cl.duoc.pelicula_service.repository.PeliculaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,59 +13,47 @@ public class PeliculaService {
     @Autowired
     private PeliculaRepository peliculaRepository;
 
-    @Transactional(readOnly = true)
-    public List<Pelicula> findAll() {
-        return peliculaRepository.findAll();
+    public List<Pelicula> findAll() { return peliculaRepository.findAll(); }
+    public Pelicula findById(Long id) { return peliculaRepository.findById(id).orElse(null); }
+    public Pelicula save(Pelicula pelicula) { return peliculaRepository.save(pelicula); }
+    public void delete(Long id) { peliculaRepository.deleteById(id); }
+
+    public Pelicula update(Long id, Pelicula actualizada) {
+        Pelicula existente = peliculaRepository.findById(id).orElse(null);
+        if (existente == null) return null;
+        existente.setNombre(actualizada.getNombre());
+        existente.setEstreno(actualizada.getEstreno());
+        existente.setGenero(actualizada.getGenero());
+        existente.setDescripcion(actualizada.getDescripcion());
+        existente.setDirectorId(actualizada.getDirectorId());
+        existente.setProductoraId(actualizada.getProductoraId());
+        existente.setDuracionMinutos(actualizada.getDuracionMinutos());
+        existente.setEsPara18(actualizada.getEsPara18());
+        return peliculaRepository.save(existente);
     }
 
-    @Transactional(readOnly = true)
-    public Pelicula findById(Long id) {
-        return peliculaRepository.findById(id).orElse(null);
+    public List<Long> obtenerIdsPorDirector(Long directorId) {
+        return peliculaRepository.findIdsByDirectorId(directorId);
     }
 
-    @Transactional(readOnly = true)
-    public List<Long> obtenerIdsPorDirector(Long idDirector) {
-        return peliculaRepository.findIdsByDirectorId(idDirector);
+    public List<Long> obtenerIdsPorProductora(Long productoraId) {
+        return peliculaRepository.findIdsByProductoraId(productoraId);
     }
 
-    @Transactional
-    public Pelicula save(Pelicula pelicula) {
-        return peliculaRepository.save(pelicula);
-    }
-
-    @Transactional
-    public void delete(Long id) {
-        peliculaRepository.deleteById(id);
-    }
-
-    @Transactional
-    public Pelicula update(Long id, Pelicula peliculaActualizada) {
-        Pelicula peliculaExistente = peliculaRepository.findById(id).orElse(null);
-        if (peliculaExistente == null) return null;
-
-        peliculaExistente.setNombre(peliculaActualizada.getNombre());
-        peliculaExistente.setEstreno(peliculaActualizada.getEstreno());
-        peliculaExistente.setGenero(peliculaActualizada.getGenero());
-        peliculaExistente.setDescripcion(peliculaActualizada.getDescripcion());
-        peliculaExistente.setDuracionMinutos(peliculaActualizada.getDuracionMinutos());
-        peliculaExistente.setEsPara18(peliculaActualizada.getEsPara18());
-
-        // Mantenemos los enlaces logicos
-        peliculaExistente.setDirectorId(peliculaActualizada.getDirectorId());
-        peliculaExistente.setProductoraId(peliculaActualizada.getProductoraId());
-
-        return peliculaRepository.save(peliculaExistente);
-    }
-
-    // --- ¡NUEVO METODO! ---
-    @Transactional(readOnly = true)
-    public List<Long> obtenerIdsPorProductora(Long idProductora) {
-        return peliculaRepository.findIdsByProductoraId(idProductora);
-    }
-
-    // --- ¡NUEVO METODO DE LOGICA: FILTRO DE EDAD! ---
-    @Transactional(readOnly = true)
+    // REPORTES
     public List<Pelicula> filtrarPorClasificacionEdad(Boolean esPara18) {
         return peliculaRepository.findByEsPara18(esPara18);
+    }
+
+    public List<Pelicula> findByGenero(String genero) {
+        return peliculaRepository.findByGeneroIgnoreCase(genero);
+    }
+
+    public List<Pelicula> findByDuracion(Integer min, Integer max) {
+        return peliculaRepository.findByDuracionMinutosBetween(min, max);
+    }
+
+    public List<Pelicula> findByNombre(String nombre) {
+        return peliculaRepository.findByNombreContainingIgnoreCase(nombre);
     }
 }

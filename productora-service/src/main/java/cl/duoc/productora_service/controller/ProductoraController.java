@@ -22,6 +22,7 @@ public class ProductoraController {
     @Autowired
     private ProductoraMapper mapper;
 
+    // CRUD
     @GetMapping
     public ResponseEntity<List<ProductoraDTO>> listarTodas() {
         List<ProductoraDTO> lista = productoraService.findAll()
@@ -40,15 +41,14 @@ public class ProductoraController {
 
     @PostMapping
     public ResponseEntity<ProductoraDTO> crear(@Valid @RequestBody Productora productora) {
-        Productora nuevaProductora = productoraService.save(productora);
-        return ResponseEntity.ok(mapper.toDTO(nuevaProductora));
+        return ResponseEntity.ok(mapper.toDTO(productoraService.save(productora)));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductoraDTO> actualizar(@PathVariable Long id, @Valid @RequestBody Productora productora) {
-        Productora productoraActualizada = productoraService.update(id, productora);
-        if (productoraActualizada == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(mapper.toDTO(productoraActualizada));
+        Productora actualizada = productoraService.update(id, productora);
+        if (actualizada == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(mapper.toDTO(actualizada));
     }
 
     @DeleteMapping("/{id}")
@@ -57,10 +57,21 @@ public class ProductoraController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{id}/estadisticas")
-    public ResponseEntity<ProductoraDTO> obtenerEstadisticas(@PathVariable Long id) {
-        ProductoraDTO dto = productoraService.obtenerEstadisticasProductora(id);
-        if (dto == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(dto);
+    // REPORTES
+    @GetMapping("/filtro/pais")
+    public ResponseEntity<List<ProductoraDTO>> filtrarPorPais(@RequestParam String pais) {
+        return ResponseEntity.ok(productoraService.findByPais(pais));
+    }
+
+    @GetMapping("/filtro/anio")
+    public ResponseEntity<List<ProductoraDTO>> filtrarPorRangoAnio(
+            @RequestParam Integer anioMin,
+            @RequestParam Integer anioMax) {
+        return ResponseEntity.ok(productoraService.findByRangoAnio(anioMin, anioMax));
+    }
+
+    @GetMapping("/buscar/nombre")
+    public ResponseEntity<List<ProductoraDTO>> buscarPorNombre(@RequestParam String nombre) {
+        return ResponseEntity.ok(productoraService.findByNombre(nombre));
     }
 }

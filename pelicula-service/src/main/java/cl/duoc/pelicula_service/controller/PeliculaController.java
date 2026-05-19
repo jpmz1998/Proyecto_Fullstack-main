@@ -21,27 +21,22 @@ public class PeliculaController {
     @Autowired
     private PeliculaMapper mapper;
 
-    // Endpoint para el Feign Client del Director (Retorna solo IDs)
+    // Endpoints para Feign Clients
     @GetMapping("/director/{idDirector}/ids")
-    public ResponseEntity<List<Long>> obtenerIdsPeliculasPorDirector(@PathVariable Long idDirector) {
+    public ResponseEntity<List<Long>> obtenerIdsPorDirector(@PathVariable Long idDirector) {
         return ResponseEntity.ok(peliculaService.obtenerIdsPorDirector(idDirector));
     }
 
-    // --- ¡NUEVO ENDPOINT PARA LA PRODUCTORA! ---
     @GetMapping("/productora/{idProductora}/ids")
-    public ResponseEntity<List<Long>> obtenerIdsPeliculasPorProductora(@PathVariable Long idProductora) {
+    public ResponseEntity<List<Long>> obtenerIdsPorProductora(@PathVariable Long idProductora) {
         return ResponseEntity.ok(peliculaService.obtenerIdsPorProductora(idProductora));
     }
 
-    // --- CRUD ESTÁNDAR RETORNANDO DTOs ---
-
+    // CRUD
     @GetMapping
     public ResponseEntity<List<PeliculaDTO>> listarTodas() {
-        List<PeliculaDTO> peliculasDto = peliculaService.findAll()
-                .stream()
-                .map(mapper::toDTO)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(peliculasDto);
+        return ResponseEntity.ok(peliculaService.findAll().stream()
+                .map(mapper::toDTO).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
@@ -53,15 +48,14 @@ public class PeliculaController {
 
     @PostMapping
     public ResponseEntity<PeliculaDTO> crear(@RequestBody Pelicula pelicula) {
-        Pelicula nuevaPelicula = peliculaService.save(pelicula);
-        return ResponseEntity.ok(mapper.toDTO(nuevaPelicula));
+        return ResponseEntity.ok(mapper.toDTO(peliculaService.save(pelicula)));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<PeliculaDTO> actualizar(@PathVariable Long id, @RequestBody Pelicula pelicula) {
-        Pelicula peliculaActualizada = peliculaService.update(id, pelicula);
-        if (peliculaActualizada == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(mapper.toDTO(peliculaActualizada));
+        Pelicula actualizada = peliculaService.update(id, pelicula);
+        if (actualizada == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(mapper.toDTO(actualizada));
     }
 
     @DeleteMapping("/{id}")
@@ -70,21 +64,30 @@ public class PeliculaController {
         return ResponseEntity.noContent().build();
     }
 
-    // --- ¡NUEVO ENDPOINT: FILTRO DE EDAD! ---
-    // Se usará asi: GET /api/v1/peliculas/filtro/edad?esPara18=true
+    // REPORTES
     @GetMapping("/filtro/edad")
-    public ResponseEntity<List<PeliculaDTO>> filtrarPeliculasPorEdad(@RequestParam Boolean esPara18) {
-        List<PeliculaDTO> peliculasFiltradas = peliculaService.filtrarPorClasificacionEdad(esPara18)
-                .stream()
-                .map(mapper::toDTO)
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(peliculasFiltradas);
+    public ResponseEntity<List<PeliculaDTO>> filtrarPorEdad(@RequestParam Boolean esPara18) {
+        return ResponseEntity.ok(peliculaService.filtrarPorClasificacionEdad(esPara18)
+                .stream().map(mapper::toDTO).collect(Collectors.toList()));
     }
-    //en POSTMAN
-    //trae las de mayoria de edad
-    // http://localhost:8093/api/v1/peliculas/filtro/edad?esPara18=true
 
-    //trae para todo publico
-    // http://localhost:8093/api/v1/peliculas/filtro/edad?esPara18=false
+    @GetMapping("/filtro/genero")
+    public ResponseEntity<List<PeliculaDTO>> filtrarPorGenero(@RequestParam String genero) {
+        return ResponseEntity.ok(peliculaService.findByGenero(genero)
+                .stream().map(mapper::toDTO).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/filtro/duracion")
+    public ResponseEntity<List<PeliculaDTO>> filtrarPorDuracion(
+            @RequestParam Integer min,
+            @RequestParam Integer max) {
+        return ResponseEntity.ok(peliculaService.findByDuracion(min, max)
+                .stream().map(mapper::toDTO).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/buscar/nombre")
+    public ResponseEntity<List<PeliculaDTO>> buscarPorNombre(@RequestParam String nombre) {
+        return ResponseEntity.ok(peliculaService.findByNombre(nombre)
+                .stream().map(mapper::toDTO).collect(Collectors.toList()));
+    }
 }

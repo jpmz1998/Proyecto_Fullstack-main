@@ -32,7 +32,7 @@ public class DirectorService {
     public List<DirectorDTO> findAll() {
         return directorRepository.findAll()
                 .stream()
-                .map(director -> obtenerEstadisticasDirector(director.getId()))
+                .map(d -> obtenerEstadisticasDirector(d.getId()))
                 .collect(Collectors.toList());
     }
 
@@ -43,48 +43,55 @@ public class DirectorService {
 
     @Transactional
     public DirectorDTO save(Director director) {
-        Director directorGuardado = directorRepository.save(director);
-        return mapper.toDTO(directorGuardado);
+        return mapper.toDTO(directorRepository.save(director));
     }
 
     @Transactional
     public void deleteById(Long id) {
-        if (!directorRepository.existsById(id)) {
-            throw new RuntimeException("No se encontró el director con ID: " + id);
-        }
         directorRepository.deleteById(id);
     }
 
     @Transactional
     public DirectorDTO update(Long id, Director directorDetails) {
-        return directorRepository.findById(id).map(directorExistente -> {
-            directorExistente.setNombre(directorDetails.getNombre());
-            directorExistente.setApellido(directorDetails.getApellido());
-            directorExistente.setNacionalidad(directorDetails.getNacionalidad());
-            directorExistente.setFechaNacimiento(directorDetails.getFechaNacimiento());
-            Director actualizado = directorRepository.save(directorExistente);
-            return mapper.toDTO(actualizado);
+        return directorRepository.findById(id).map(existente -> {
+            existente.setNombre(directorDetails.getNombre());
+            existente.setApellido(directorDetails.getApellido());
+            existente.setNacionalidad(directorDetails.getNacionalidad());
+            existente.setFechaNacimiento(directorDetails.getFechaNacimiento());
+            return mapper.toDTO(directorRepository.save(existente));
         }).orElse(null);
     }
 
     public DirectorDTO obtenerEstadisticasDirector(Long idDirector) {
-        Director directorLocal = directorRepository.findById(idDirector).orElse(null);
-        if (directorLocal == null) return null;
-
-        DirectorDTO dto = mapper.toDTO(directorLocal);
-
+        Director local = directorRepository.findById(idDirector).orElse(null);
+        if (local == null) return null;
+        DirectorDTO dto = mapper.toDTO(local);
         try {
-            List<Long> idsPeliculas = peliculaClient.obtenerIdsPeliculasPorDirector(idDirector);
-
-            if (idsPeliculas != null && !idsPeliculas.isEmpty()) {
-                dto.setCantidadPeliculas(idsPeliculas.size());
-                Double promedio = calificacionClient.obtenerPromedioPorListaDePeliculas(idsPeliculas);
+            List<Long> ids = peliculaClient.obtenerIdsPeliculasPorDirector(idDirector);
+            if (ids != null && !ids.isEmpty()) {
+                dto.setCantidadPeliculas(ids.size());
+                Double promedio = calificacionClient.obtenerPromedioPorListaDePeliculas(ids);
                 dto.setPromedioEstrellas(promedio != null ? promedio : 0.0);
             }
         } catch (Exception e) {
-            System.err.println("Error de comunicación con servicios externos: " + e.getMessage());
+            System.err.println("Error con servicios externos: " + e.getMessage());
         }
-
         return dto;
+    }
+
+    // REPORTES
+    public List<DirectorDTO> findByNacionalidad(String nacionalidad) {
+        return directorRepository.findByNacionalidadIgnoreCase(nacionalidad)
+                .stream().map(mapper::toDTO).collect(Collectors.toList());
+    }
+
+    public List<DirectorDTO> findByApellido(String apellido) {
+        return directorRepository.findByApellidoContainingIgnoreCase(apellido)
+                .stream().map(mapper::toDTO).collect(Collectors.toList());
+    }
+
+    public List<DirectorDTO> findByNombreYApellido(String nombre, String apellido) {
+        return directorRepository.findByNombreContainingIgnoreCaseAndApellidoContainingIgnoreCase(nombre, apellido)
+                .stream().map(mapper::toDTO).collect(Collectors.toList());
     }
 }

@@ -24,52 +24,81 @@ public class SuscripcionService {
     @Autowired
     private UsuarioFeignClient usuarioClient;
 
-    // 1. Crear suscripción
     public SuscripcionDTO save(Suscripcion suscripcion) {
         Suscripcion guardada = suscripcionRepository.save(suscripcion);
         UsuarioDTO user = usuarioClient.obtenerUsuarioPorId(guardada.getUsuarioId());
         return mapper.toDTO(guardada, user);
     }
 
-    // 2. Buscar por ID
     public SuscripcionDTO findById(Long id) {
-        Suscripcion suscripcion = suscripcionRepository.findById(id).orElse(null);
-        if (suscripcion == null) return null;
-        UsuarioDTO usuarioDTO = usuarioClient.obtenerUsuarioPorId(suscripcion.getUsuarioId());
-        return mapper.toDTO(suscripcion, usuarioDTO);
+        Suscripcion s = suscripcionRepository.findById(id).orElse(null);
+        if (s == null) return null;
+        UsuarioDTO user = usuarioClient.obtenerUsuarioPorId(s.getUsuarioId());
+        return mapper.toDTO(s, user);
     }
 
-    // 3. Listar todas
     public List<SuscripcionDTO> findAll() {
-        List<Suscripcion> suscripciones = suscripcionRepository.findAll();
         List<SuscripcionDTO> dtos = new ArrayList<>();
-        for (Suscripcion sub : suscripciones) {
-            UsuarioDTO user = usuarioClient.obtenerUsuarioPorId(sub.getUsuarioId());
-            dtos.add(mapper.toDTO(sub, user));
+        for (Suscripcion s : suscripcionRepository.findAll()) {
+            UsuarioDTO user = usuarioClient.obtenerUsuarioPorId(s.getUsuarioId());
+            dtos.add(mapper.toDTO(s, user));
         }
         return dtos;
     }
 
-    // 4. Actualizar suscripción
-    public SuscripcionDTO update(Long id, Suscripcion suscripcionActualizada) {
-        Suscripcion suscripcionExistente = suscripcionRepository.findById(id).orElse(null);
-        if (suscripcionExistente == null) return null;
-
-        suscripcionExistente.setTipoPlan(suscripcionActualizada.getTipoPlan());
-        suscripcionExistente.setMonto(suscripcionActualizada.getMonto());
-        suscripcionExistente.setFechaInicio(suscripcionActualizada.getFechaInicio());
-        suscripcionExistente.setEstado(suscripcionActualizada.getEstado());
-        suscripcionExistente.setUsuarioId(suscripcionActualizada.getUsuarioId());
-
-        Suscripcion actualizada = suscripcionRepository.save(suscripcionExistente);
-        UsuarioDTO user = usuarioClient.obtenerUsuarioPorId(actualizada.getUsuarioId());
-        return mapper.toDTO(actualizada, user);
+    public SuscripcionDTO update(Long id, Suscripcion actualizada) {
+        Suscripcion existente = suscripcionRepository.findById(id).orElse(null);
+        if (existente == null) return null;
+        existente.setTipoPlan(actualizada.getTipoPlan());
+        existente.setMonto(actualizada.getMonto());
+        existente.setFechaInicio(actualizada.getFechaInicio());
+        existente.setEstado(actualizada.getEstado());
+        existente.setUsuarioId(actualizada.getUsuarioId());
+        Suscripcion guardada = suscripcionRepository.save(existente);
+        UsuarioDTO user = usuarioClient.obtenerUsuarioPorId(guardada.getUsuarioId());
+        return mapper.toDTO(guardada, user);
     }
 
-    // 5. Eliminar suscripción
     public boolean delete(Long id) {
         if (!suscripcionRepository.existsById(id)) return false;
         suscripcionRepository.deleteById(id);
         return true;
+    }
+
+    // REPORTES
+    public List<SuscripcionDTO> findByEstado(String estado) {
+        List<SuscripcionDTO> dtos = new ArrayList<>();
+        for (Suscripcion s : suscripcionRepository.findByEstado(estado)) {
+            UsuarioDTO user = usuarioClient.obtenerUsuarioPorId(s.getUsuarioId());
+            dtos.add(mapper.toDTO(s, user));
+        }
+        return dtos;
+    }
+
+    public List<SuscripcionDTO> findByPlan(String tipoPlan) {
+        List<SuscripcionDTO> dtos = new ArrayList<>();
+        for (Suscripcion s : suscripcionRepository.findByTipoPlan(tipoPlan)) {
+            UsuarioDTO user = usuarioClient.obtenerUsuarioPorId(s.getUsuarioId());
+            dtos.add(mapper.toDTO(s, user));
+        }
+        return dtos;
+    }
+
+    public List<SuscripcionDTO> findByUsuario(Long idUsuario) {
+        List<SuscripcionDTO> dtos = new ArrayList<>();
+        for (Suscripcion s : suscripcionRepository.findByUsuarioId(idUsuario)) {
+            UsuarioDTO user = usuarioClient.obtenerUsuarioPorId(s.getUsuarioId());
+            dtos.add(mapper.toDTO(s, user));
+        }
+        return dtos;
+    }
+
+    public List<SuscripcionDTO> findByRangoDeMonto(Integer montoMin, Integer montoMax) {
+        List<SuscripcionDTO> dtos = new ArrayList<>();
+        for (Suscripcion s : suscripcionRepository.findByRangoDeMonto(montoMin, montoMax)) {
+            UsuarioDTO user = usuarioClient.obtenerUsuarioPorId(s.getUsuarioId());
+            dtos.add(mapper.toDTO(s, user));
+        }
+        return dtos;
     }
 }

@@ -4,68 +4,41 @@ import cl.duoc.mi_lista_service.model.ItemLista;
 import cl.duoc.mi_lista_service.repository.ItemListaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class MiListaService {
 
     @Autowired
-    private ItemListaRepository miListaRepository;
+    private ItemListaRepository itemListaRepository;
 
-    // --- MÉTODOS DE LECTURA ---
+    public List<ItemLista> findAll() { return itemListaRepository.findAll(); }
+    public ItemLista findById(Long id) { return itemListaRepository.findById(id).orElse(null); }
+    public ItemLista save(ItemLista item) { return itemListaRepository.save(item); }
+    public void delete(Long id) { itemListaRepository.deleteById(id); }
 
-    @Transactional(readOnly = true)
-    public List<ItemLista> findAll() {
-        return miListaRepository.findAll();
+    public ItemLista update(Long id, ItemLista actualizado) {
+        ItemLista existente = itemListaRepository.findById(id).orElse(null);
+        if (existente == null) return null;
+        existente.setIdUsuario(actualizado.getIdUsuario());
+        existente.setIdPelicula(actualizado.getIdPelicula());
+        existente.setFechaAgregado(actualizado.getFechaAgregado());
+        return itemListaRepository.save(existente);
     }
 
-    @Transactional(readOnly = true)
-    public ItemLista findById(Long id) {
-        return miListaRepository.findById(id).orElse(null);
+    // REPORTES
+    public List<ItemLista> findByUsuario(Long idUsuario) {
+        return itemListaRepository.findByIdUsuario(idUsuario);
     }
 
-    @Transactional(readOnly = true)
-    public List<ItemLista> obtenerListaDeUsuario(Long idUsuario) {
-        return miListaRepository.findByIdUsuario(idUsuario);
+    public Boolean existeEnLista(Long idUsuario, Long idPelicula) {
+        return itemListaRepository.existsByIdUsuarioAndIdPelicula(idUsuario, idPelicula);
     }
 
-    // --- MÉTODOS DE ESCRITURA (CRUD) ---
-
-    @Transactional
-    public ItemLista save(ItemLista item) {
-        // Regla de Negocio: Evitar duplicados antes de guardar
-        if (miListaRepository.existsByIdUsuarioAndIdPelicula(item.getIdUsuario(), item.getIdPelicula())) {
-            throw new RuntimeException("La película ya está en la lista de este usuario.");
-        }
-        item.setFechaAgregado(LocalDate.now());
-        return miListaRepository.save(item);
-    }
-
-    @Transactional
-    public ItemLista update(Long id, ItemLista itemActualizado) {
-        ItemLista itemExistente = miListaRepository.findById(id).orElse(null);
-        if (itemExistente == null) return null;
-
-        // Si se intenta cambiar la película, validamos que no exista ya en la lista del usuario
-        if (!itemExistente.getIdPelicula().equals(itemActualizado.getIdPelicula())) {
-            if (miListaRepository.existsByIdUsuarioAndIdPelicula(itemExistente.getIdUsuario(), itemActualizado.getIdPelicula())) {
-                throw new RuntimeException("No se puede actualizar: la nueva película ya existe en la lista.");
-            }
-        }
-
-        itemExistente.setIdPelicula(itemActualizado.getIdPelicula());
-        itemExistente.setIdUsuario(itemActualizado.getIdUsuario());
-        // La fecha de agregado solemos mantenerla original o actualizarla según el requerimiento
-
-        return miListaRepository.save(itemExistente);
-    }
-
-    @Transactional
-    public void delete(Long id) {
-        miListaRepository.deleteById(id);
+    public Long cantidadUsuariosConPelicula(Long idPelicula) {
+        return itemListaRepository.findAll().stream()
+                .filter(i -> i.getIdPelicula().equals(idPelicula))
+                .count();
     }
 }
