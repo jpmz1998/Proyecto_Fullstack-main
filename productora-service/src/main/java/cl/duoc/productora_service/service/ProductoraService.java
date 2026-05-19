@@ -25,18 +25,19 @@ public class ProductoraService {
     private PeliculaFeignClient peliculaClient;
 
     @Transactional(readOnly = true)
-    public List<Productora> findAll() {
-        return productoraRepository.findAll();
+    public List<ProductoraDTO> findAll() {
+        return productoraRepository.findAll().stream().map(mapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public Productora findById(Long id) {
-        return productoraRepository.findById(id).orElse(null);
+    public ProductoraDTO findById(Long id) {
+        return mapper.toDTO(productoraRepository.findById(id).orElse(null));
     }
 
     @Transactional
-    public Productora save(Productora productora) {
-        return productoraRepository.save(productora);
+    public ProductoraDTO save(Productora productora) {
+        return mapper.toDTO(productoraRepository.save(productora));
     }
 
     @Transactional
@@ -45,13 +46,13 @@ public class ProductoraService {
     }
 
     @Transactional
-    public Productora update(Long id, Productora actualizada) {
+    public ProductoraDTO update(Long id, Productora actualizada) {
         Productora existente = productoraRepository.findById(id).orElse(null);
         if (existente == null) return null;
         existente.setNombre(actualizada.getNombre());
         existente.setPaisUbicacion(actualizada.getPaisUbicacion());
         existente.setAnioFundacion(actualizada.getAnioFundacion());
-        return productoraRepository.save(existente);
+        return mapper.toDTO(productoraRepository.save(existente));
     }
 
     public ProductoraDTO obtenerEstadisticasProductora(Long idProductora) {

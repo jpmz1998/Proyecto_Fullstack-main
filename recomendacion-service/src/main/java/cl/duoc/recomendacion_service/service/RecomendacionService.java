@@ -1,11 +1,14 @@
 package cl.duoc.recomendacion_service.service;
 
+import cl.duoc.recomendacion_service.dto.RecomendacionDTO;
+import cl.duoc.recomendacion_service.mapper.RecomendacionMapper;
 import cl.duoc.recomendacion_service.model.Recomendacion;
 import cl.duoc.recomendacion_service.repository.RecomendacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RecomendacionService {
@@ -13,12 +16,31 @@ public class RecomendacionService {
     @Autowired
     private RecomendacionRepository recomendacionRepository;
 
-    public List<Recomendacion> findAll() { return recomendacionRepository.findAll(); }
-    public Recomendacion findById(Long id) { return recomendacionRepository.findById(id).orElse(null); }
-    public Recomendacion save(Recomendacion r) { return recomendacionRepository.save(r); }
-    public void delete(Long id) { recomendacionRepository.deleteById(id); }
+    @Autowired
+    private RecomendacionMapper mapper;
 
-    public Recomendacion update(Long id, Recomendacion actualizada) {
+    public List<RecomendacionDTO> findAll() {
+        return recomendacionRepository.findAll()
+                .stream()
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public RecomendacionDTO findById(Long id) {
+         Recomendacion recomendacion = recomendacionRepository.findById(id).orElse(null);
+         return mapper.toDTO(recomendacion);
+    }
+
+    public RecomendacionDTO save(Recomendacion r) {
+        Recomendacion rSave = recomendacionRepository.save(r);
+        return mapper.toDTO(rSave);
+    }
+
+    public void delete(Long id) {
+        recomendacionRepository.deleteById(id);
+    }
+
+    public RecomendacionDTO update(Long id, Recomendacion actualizada) {
         Recomendacion existente = recomendacionRepository.findById(id).orElse(null);
         if (existente == null) return null;
         existente.setIdUsuario(actualizada.getIdUsuario());
@@ -26,19 +48,27 @@ public class RecomendacionService {
         existente.setMensajePersonalizado(actualizada.getMensajePersonalizado());
         existente.setNivelConfianza(actualizada.getNivelConfianza());
         existente.setFechaRecomendacion(actualizada.getFechaRecomendacion());
-        return recomendacionRepository.save(existente);
+        return mapper.toDTO(recomendacionRepository.save(existente));
     }
 
     // REPORTES
-    public List<Recomendacion> findByUsuario(Long idUsuario) {
-        return recomendacionRepository.findByIdUsuario(idUsuario);
+    public List<RecomendacionDTO> findByUsuario(Long idUsuario) {
+        return recomendacionRepository.findByIdUsuario(idUsuario)
+                .stream()
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public List<Recomendacion> findByNivelConfianza(Integer nivelMinimo) {
-        return recomendacionRepository.findByNivelConfianzaGreaterThanEqual(nivelMinimo);
+    public List<RecomendacionDTO> findByNivelConfianza(Integer nivelMinimo) {
+        return recomendacionRepository.findByNivelConfianzaGreaterThanEqual(nivelMinimo)
+                .stream()
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public List<Recomendacion> findByPelicula(Long idPelicula) {
-        return recomendacionRepository.findByIdPelicula(idPelicula);
+    public List<RecomendacionDTO> findByPelicula(Long idPelicula) {
+        return recomendacionRepository.findByIdPelicula(idPelicula)
+                .stream().map(mapper::toDTO)
+                .collect(Collectors.toList());
     }
 }

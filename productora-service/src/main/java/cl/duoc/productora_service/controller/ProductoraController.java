@@ -25,11 +25,7 @@ public class ProductoraController {
     // CRUD
     @GetMapping
     public ResponseEntity<List<ProductoraDTO>> listarTodas() {
-        List<ProductoraDTO> lista = productoraService.findAll()
-                .stream()
-                .map(p -> productoraService.obtenerEstadisticasProductora(p.getId()))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(lista);
+        return ResponseEntity.ok(productoraService.findAll());
     }
 
     @GetMapping("/{id}")
@@ -41,14 +37,14 @@ public class ProductoraController {
 
     @PostMapping
     public ResponseEntity<ProductoraDTO> crear(@Valid @RequestBody Productora productora) {
-        return ResponseEntity.ok(mapper.toDTO(productoraService.save(productora)));
+        return ResponseEntity.ok(productoraService.save(productora));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductoraDTO> actualizar(@PathVariable Long id, @Valid @RequestBody Productora productora) {
-        Productora actualizada = productoraService.update(id, productora);
+        ProductoraDTO actualizada = productoraService.update(id, productora);
         if (actualizada == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(mapper.toDTO(actualizada));
+        return ResponseEntity.ok(actualizada);
     }
 
     @DeleteMapping("/{id}")

@@ -24,27 +24,27 @@ public class RecomendacionController {
     // CRUD
     @GetMapping
     public ResponseEntity<List<RecomendacionDTO>> listar() {
-        return ResponseEntity.ok(recomendacionService.findAll().stream()
-                .map(mapper::toDTO).collect(Collectors.toList()));
+        return ResponseEntity.ok(recomendacionService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<RecomendacionDTO> obtenerPorId(@PathVariable Long id) {
-        Recomendacion r = recomendacionService.findById(id);
+        RecomendacionDTO r = recomendacionService.findById(id);
         if (r == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(mapper.toDTO(r));
+        return ResponseEntity.ok(r);
     }
 
     @PostMapping
     public ResponseEntity<RecomendacionDTO> crear(@RequestBody Recomendacion recomendacion) {
-        return ResponseEntity.ok(mapper.toDTO(recomendacionService.save(recomendacion)));
+        RecomendacionDTO r = recomendacionService.save(recomendacion);
+        return ResponseEntity.ok(r);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<RecomendacionDTO> actualizar(@PathVariable Long id, @RequestBody Recomendacion recomendacion) {
-        Recomendacion actualizada = recomendacionService.update(id, recomendacion);
+        RecomendacionDTO actualizada = recomendacionService.update(id, recomendacion);
         if (actualizada == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(mapper.toDTO(actualizada));
+        return ResponseEntity.ok(actualizada);
     }
 
     @DeleteMapping("/{id}")
@@ -56,19 +56,16 @@ public class RecomendacionController {
     // REPORTES
     @GetMapping("/usuario/{idUsuario}")
     public ResponseEntity<List<RecomendacionDTO>> porUsuario(@PathVariable Long idUsuario) {
-        return ResponseEntity.ok(recomendacionService.findByUsuario(idUsuario).stream()
-                .map(mapper::toDTO).collect(Collectors.toList()));
+        return ResponseEntity.ok(recomendacionService.findByUsuario(idUsuario));
     }
 
     @GetMapping("/filtro/confianza")
     public ResponseEntity<List<RecomendacionDTO>> filtrarPorConfianza(@RequestParam Integer nivelMinimo) {
-        return ResponseEntity.ok(recomendacionService.findByNivelConfianza(nivelMinimo).stream()
-                .map(mapper::toDTO).collect(Collectors.toList()));
+        return ResponseEntity.ok(recomendacionService.findByNivelConfianza(nivelMinimo));
     }
 
     @GetMapping("/pelicula/{idPelicula}")
     public ResponseEntity<List<RecomendacionDTO>> porPelicula(@PathVariable Long idPelicula) {
-        return ResponseEntity.ok(recomendacionService.findByPelicula(idPelicula).stream()
-                .map(mapper::toDTO).collect(Collectors.toList()));
+        return ResponseEntity.ok(recomendacionService.findByPelicula(idPelicula));
     }
 }

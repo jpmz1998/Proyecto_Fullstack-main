@@ -24,27 +24,26 @@ public class MiListaController {
     // CRUD
     @GetMapping
     public ResponseEntity<List<ItemListaDTO>> listar() {
-        return ResponseEntity.ok(miListaService.findAll().stream()
-                .map(mapper::toDTO).collect(Collectors.toList()));
+        return ResponseEntity.ok(miListaService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ItemListaDTO> obtenerPorId(@PathVariable Long id) {
-        ItemLista item = miListaService.findById(id);
+        ItemListaDTO  item = miListaService.findById(id);
         if (item == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(mapper.toDTO(item));
+        return ResponseEntity.ok(item);
     }
 
     @PostMapping
     public ResponseEntity<ItemListaDTO> agregar(@RequestBody ItemLista item) {
-        return ResponseEntity.ok(mapper.toDTO(miListaService.save(item)));
+        return ResponseEntity.ok(miListaService.save(item));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ItemListaDTO> actualizar(@PathVariable Long id, @RequestBody ItemLista item) {
-        ItemLista actualizado = miListaService.update(id, item);
+        ItemListaDTO actualizado = miListaService.update(id, item);
         if (actualizado == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(mapper.toDTO(actualizado));
+        return ResponseEntity.ok(actualizado);
     }
 
     @DeleteMapping("/{id}")
@@ -56,8 +55,7 @@ public class MiListaController {
     // REPORTES
     @GetMapping("/usuario/{idUsuario}")
     public ResponseEntity<List<ItemListaDTO>> porUsuario(@PathVariable Long idUsuario) {
-        return ResponseEntity.ok(miListaService.findByUsuario(idUsuario).stream()
-                .map(mapper::toDTO).collect(Collectors.toList()));
+        return ResponseEntity.ok(miListaService.findByUsuario(idUsuario));
     }
 
     @GetMapping("/existe")

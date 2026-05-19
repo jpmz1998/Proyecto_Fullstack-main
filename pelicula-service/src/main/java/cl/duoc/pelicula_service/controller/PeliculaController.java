@@ -35,27 +35,26 @@ public class PeliculaController {
     // CRUD
     @GetMapping
     public ResponseEntity<List<PeliculaDTO>> listarTodas() {
-        return ResponseEntity.ok(peliculaService.findAll().stream()
-                .map(mapper::toDTO).collect(Collectors.toList()));
+        return ResponseEntity.ok(peliculaService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PeliculaDTO> obtenerPorId(@PathVariable Long id) {
-        Pelicula pelicula = peliculaService.findById(id);
+        PeliculaDTO pelicula = peliculaService.findById(id);
         if (pelicula == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(mapper.toDTO(pelicula));
+        return ResponseEntity.ok(pelicula);
     }
 
     @PostMapping
     public ResponseEntity<PeliculaDTO> crear(@RequestBody Pelicula pelicula) {
-        return ResponseEntity.ok(mapper.toDTO(peliculaService.save(pelicula)));
+        return ResponseEntity.ok(peliculaService.save(pelicula));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<PeliculaDTO> actualizar(@PathVariable Long id, @RequestBody Pelicula pelicula) {
-        Pelicula actualizada = peliculaService.update(id, pelicula);
+        PeliculaDTO actualizada = peliculaService.update(id, pelicula);
         if (actualizada == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(mapper.toDTO(actualizada));
+        return ResponseEntity.ok(actualizada);
     }
 
     @DeleteMapping("/{id}")
@@ -67,27 +66,23 @@ public class PeliculaController {
     // REPORTES
     @GetMapping("/filtro/edad")
     public ResponseEntity<List<PeliculaDTO>> filtrarPorEdad(@RequestParam Boolean esPara18) {
-        return ResponseEntity.ok(peliculaService.filtrarPorClasificacionEdad(esPara18)
-                .stream().map(mapper::toDTO).collect(Collectors.toList()));
+        return ResponseEntity.ok(peliculaService.filtrarPorClasificacionEdad(esPara18));
     }
 
     @GetMapping("/filtro/genero")
     public ResponseEntity<List<PeliculaDTO>> filtrarPorGenero(@RequestParam String genero) {
-        return ResponseEntity.ok(peliculaService.findByGenero(genero)
-                .stream().map(mapper::toDTO).collect(Collectors.toList()));
+        return ResponseEntity.ok(peliculaService.findByGenero(genero));
     }
 
     @GetMapping("/filtro/duracion")
     public ResponseEntity<List<PeliculaDTO>> filtrarPorDuracion(
             @RequestParam Integer min,
             @RequestParam Integer max) {
-        return ResponseEntity.ok(peliculaService.findByDuracion(min, max)
-                .stream().map(mapper::toDTO).collect(Collectors.toList()));
+        return ResponseEntity.ok(peliculaService.findByDuracion(min, max));
     }
 
     @GetMapping("/buscar/nombre")
     public ResponseEntity<List<PeliculaDTO>> buscarPorNombre(@RequestParam String nombre) {
-        return ResponseEntity.ok(peliculaService.findByNombre(nombre)
-                .stream().map(mapper::toDTO).collect(Collectors.toList()));
+        return ResponseEntity.ok(peliculaService.findByNombre(nombre));
     }
 }
